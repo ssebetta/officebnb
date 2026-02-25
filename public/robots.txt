@@ -1,0 +1,44 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /super-admin
+Disallow: /dashboard
+Disallow: /bookings
+Disallow: /listings
+Disallow: /offices/*/edit
+Disallow: /api/
+Disallow: /*.json$
+Disallow: /search?*
+Disallow: /register
+Disallow: /login
+
+# Allow search engines to crawl public office listings
+Allow: /offices/
+
+# Specific rules for major search engines
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+# Social media bots (allow for better sharing)
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+User-agent: LinkedInBot
+Allow: /
+
+User-agent: WhatsApp
+Allow: /
+
+User-agent: Slurp
+Allow: /
+
+# Sitemap location
+Sitemap: https://officebnb.systimo.org/sitemap.xml
