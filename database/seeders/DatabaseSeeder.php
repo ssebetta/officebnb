@@ -16,6 +16,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        $faker = \Faker\Factory::create();
+
         $superAdmin = User::factory()->create([
             'name' => 'Harold Peter',
             'email' => 'haroldpeter6@gmail.com',
@@ -57,17 +59,17 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $offices = Office::query()->pluck('id');
-        $renters->each(function (User $renter) use ($offices) {
+        $renters->each(function (User $renter) use ($offices, $faker) {
             $officeId = $offices->random();
             $booking = $renter->bookings()->create([
                 'office_id' => $officeId,
                 'start_date' => now()->addDays(7),
                 'end_date' => now()->addDays(10),
-                'guests' => fake()->numberBetween(2, 8),
-                'total_amount' => fake()->numberBetween(600, 1800) * 100,
+                'guests' => $faker->numberBetween(2, 8),
+                'total_amount' => $faker->numberBetween(600, 1800) * 100,
                 'currency' => 'USD',
-                'status' => fake()->randomElement(['pending', 'approved']),
-                'notes' => fake()->optional()->sentence(8),
+                'status' => $faker->randomElement(['pending', 'approved']),
+                'notes' => $faker->optional()->sentence(8),
             ]);
 
             if ($booking->status === 'approved') {
@@ -76,7 +78,7 @@ class DatabaseSeeder extends Seeder
                     'currency' => 'USD',
                     'status' => 'paid',
                     'provider' => 'manual',
-                    'reference' => fake()->uuid(),
+                    'reference' => $faker->uuid(),
                     'paid_at' => now()->subDays(2),
                 ]);
             }
