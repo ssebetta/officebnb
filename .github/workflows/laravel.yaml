@@ -37,10 +37,8 @@ jobs:
 
       - name: Create Database
         run: |
-
-
-        
           mkdir -p database
+          rm -f database/database.sqlite
           touch database/database.sqlite
 
       # - name: Run ESLint
