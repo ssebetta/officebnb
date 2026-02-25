@@ -12,8 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('payments', function (Blueprint $table) {
-            $table->string('payment_method')->default('stripe')->after('provider');
-            $table->text('payment_details')->nullable()->after('payment_method');
+            if (!Schema::hasColumn('payments', 'payment_method')) {
+                $table->string('payment_method')->default('stripe')->after('provider');
+            }
+            if (!Schema::hasColumn('payments', 'payment_details')) {
+                $table->text('payment_details')->nullable()->after('payment_method');
+            }
         });
     }
 
@@ -23,7 +27,16 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('payments', function (Blueprint $table) {
-            $table->dropColumn(['payment_method', 'payment_details']);
+            $columnsToRemove = [];
+            if (Schema::hasColumn('payments', 'payment_method')) {
+                $columnsToRemove[] = 'payment_method';
+            }
+            if (Schema::hasColumn('payments', 'payment_details')) {
+                $columnsToRemove[] = 'payment_details';
+            }
+            if (!empty($columnsToRemove)) {
+                $table->dropColumn($columnsToRemove);
+            }
         });
     }
 };
